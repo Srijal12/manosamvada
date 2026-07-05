@@ -1,1 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Admin — Manosamvada{% endblock %}
 
+{% block content %}
+<div class="page-shell">
+  <h1 style="font-size:30px;">Admin overview</h1>
+  <p style="margin-bottom:32px;">Platform health and crisis-log review.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="value">{{ overview.total_users }}</div>
+      <div class="label">Registered users</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ overview.total_sessions }}</div>
+      <div class="label">Conversations</div>
+    </div>
+    <div class="stat-card">
+      <div class="value">{{ overview.total_messages }}</div>
+      <div class="label">Messages exchanged</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h3 style="margin:0;">Pending crisis reviews</h3>
+      <span class="badge {% if overview.pending_crisis_reviews > 0 %}badge-crisis{% else %}badge-ok{% endif %}">
+        {{ overview.pending_crisis_reviews }} pending
+      </span>
+    </div>
+    {% if crisis_logs %}
+      <table class="data-table">
+        <thead><tr><th>User</th><th>Message snippet</th><th>Detected</th><th></th></tr></thead>
+        <tbody>
+          {% for log in crisis_logs %}
+            <tr>
+              <td>{{ log.username or "Guest" }}</td>
+              <td>{{ log.message_snippet }}</td>
+              <td>{{ log.detected_at }}</td>
+              <td><button class="btn btn-ghost btn-sm review-btn" data-log-id="{{ log.id }}">Mark reviewed</button></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="empty-state">No pending crisis events. Everything looks calm.</div>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h3 style="margin:0;">Recent users</h3>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Username</th><th>Email</th><th>Verified</th><th>Joined</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+          <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+              <span class="badge {% if u.is_verified %}badge-ok{% else %}badge-neutral{% endif %}">
+                {{ "Verified" if u.is_verified else "Pending" }}
+              </span>
+            </td>
+            <td>{{ u.created_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.querySelectorAll(".review-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const logId = btn.dataset.logId;
+      const res = await fetch(`/admin/crisis-logs/${logId}/review`, { method: "POST" });
+      if (res.ok) {
+        btn.closest("tr").style.opacity = "0.4";
+        btn.textContent = "Reviewed";
+        btn.disabled = true;
+      }
+    });
+  });
+</script>
+{% endblock %}
