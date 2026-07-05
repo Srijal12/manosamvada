@@ -1,1 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Manosamvada{% endblock %}
 
+{% block content %}
+<div class="page-shell">
+  <h1 style="font-size:30px;">Your dashboard</h1>
+  <p style="margin-bottom:32px;">A gentle overview of how your conversations have gone.</p>
+
+  {% if summary %}
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="value">{{ summary.total_sessions }}</div>
+        <div class="label">Conversations</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">{{ summary.total_messages }}</div>
+        <div class="label">Messages sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="value" style="text-transform:capitalize;">{{ summary.top_emotion }}</div>
+        <div class="label">Most common mood</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3 style="margin:0;">Search your history</h3>
+      </div>
+      <div class="field">
+        <input type="text" id="dashboard-search" placeholder="Search conversations by keyword…">
+      </div>
+      <div id="search-results"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3 style="margin:0;">Mood trend</h3>
+        <a href="{{ url_for('dashboard.export_csv') }}" class="btn btn-secondary btn-sm">Export as CSV</a>
+      </div>
+      {% if mood_trend %}
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Emotion</th><th>Messages</th></tr></thead>
+          <tbody>
+            {% for row in mood_trend %}
+              <tr>
+                <td>{{ row.date }}</td>
+                <td style="text-transform:capitalize;">{{ row.emotion }}</td>
+                <td>{{ row.count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <div class="empty-state">No mood data yet — start a conversation to see trends here.</div>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="panel empty-state">
+      Guest sessions aren't saved, so there's no history to show here.
+      <br><a href="{{ url_for('auth.register') }}">Create an account</a> to start tracking your conversations.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
