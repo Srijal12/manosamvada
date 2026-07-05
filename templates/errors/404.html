@@ -1,1 +1,10 @@
-
+{% extends "base.html" %}
+{% block title %}Page not found — Manosamvada{% endblock %}
+{% block content %}
+<div class="error-shell">
+  <div class="code">404</div>
+  <h1>This page went quiet.</h1>
+  <p>The page you're looking for doesn't exist, or may have moved.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">Return home</a>
+</div>
+{% endblock %}
