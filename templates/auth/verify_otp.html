@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Log in — Manosamvada{% endblock %}
+{% block title %}Verify your email — Manosamvada{% endblock %}
 
 {% block nav %}{% endblock %}
 {% block footer %}{% endblock %}
@@ -8,8 +8,8 @@
 <div class="auth-shell">
   <div class="lamp-glow" style="width:400px; height:400px; top:10%; left:50%; transform:translateX(-50%);"></div>
   <div class="auth-card">
-    <h1>Welcome back</h1>
-    <p class="tagline">Manosamvada · Dialogue of the Mind</p>
+    <h1>Check your email</h1>
+    <p class="tagline">We sent a 6-digit code to {{ email }}</p>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -21,20 +21,20 @@
 
     <form method="POST" novalidate>
       <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required maxlength="254" autocomplete="email">
+        <label for="otp">Verification code</label>
+        <input type="text" id="otp" name="otp" class="otp-input" required inputmode="numeric" maxlength="6" placeholder="000000">
+        <div class="field-hint">This code expires in 10 minutes.</div>
       </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      <button type="submit" class="btn btn-primary btn-block">Verify and continue</button>
     </form>
 
     <div class="auth-footer">
-      New here? <a href="{{ url_for('auth.register') }}">Create an account</a><br>
-      Or <a href="{{ url_for('guest') }}">continue as a guest</a>.
+      Wrong email? <a href="{{ url_for('auth.register') }}">Start over</a>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 {% endblock %}

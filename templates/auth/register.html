@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Log in — Manosamvada{% endblock %}
+{% block title %}Create your account — Manosamvada{% endblock %}
 
 {% block nav %}{% endblock %}
 {% block footer %}{% endblock %}
@@ -8,7 +8,7 @@
 <div class="auth-shell">
   <div class="lamp-glow" style="width:400px; height:400px; top:10%; left:50%; transform:translateX(-50%);"></div>
   <div class="auth-card">
-    <h1>Welcome back</h1>
+    <h1>Create your account</h1>
     <p class="tagline">Manosamvada · Dialogue of the Mind</p>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -21,20 +21,32 @@
 
     <form method="POST" novalidate>
       <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required maxlength="50" autocomplete="username">
+      </div>
+      <div class="field">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required maxlength="254" autocomplete="email">
       </div>
       <div class="field">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
+        <input type="password" id="password" name="password" required autocomplete="new-password">
+        <div class="field-hint" id="password-strength-hint"></div>
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      <div class="field">
+        <label for="confirm_password">Confirm password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send verification code</button>
     </form>
 
     <div class="auth-footer">
-      New here? <a href="{{ url_for('auth.register') }}">Create an account</a><br>
-      Or <a href="{{ url_for('guest') }}">continue as a guest</a>.
+      Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 {% endblock %}
