@@ -1,1 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Chat — Manosamvada{% endblock %}
+{% block nav %}{% endblock %}
+{% block footer %}{% endblock %}
 
+{% block extra_head %}
+<style>
+  body { overflow: hidden; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-shell">
+  <aside class="chat-sidebar" id="chat-sidebar">
+    <div class="chat-sidebar-header">
+      <a href="{{ url_for('index') }}" class="nav-brand" style="color:inherit; text-decoration:none; font-size:16px;">
+        <span class="lamp-dot"></span> Manosamvada
+      </a>
+    </div>
+
+    {% if not is_guest %}
+      <button class="btn btn-secondary btn-block btn-sm" id="new-session-btn" style="margin-bottom:16px;">+ New conversation</button>
+      <div class="session-list" id="session-list">
+        {% for s in sessions %}
+          <div class="session-item" data-session-id="{{ s.id }}">{{ s.title }}</div>
+        {% else %}
+          <div class="empty-state" style="font-size:13px;">No conversations yet.</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state" style="font-size:13px;">
+        You're chatting as a guest. <a href="{{ url_for('auth.register') }}">Create an account</a> to save your history.
+      </div>
+    {% endif %}
+
+    <div class="sidebar-footer">
+      {% if not is_guest %}
+        <a href="{{ url_for('dashboard.dashboard_home') }}" class="btn btn-ghost btn-sm">Dashboard</a>
+      {% endif %}
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost btn-sm">Log out</a>
+    </div>
+  </aside>
+
+  <div class="chat-main">
+    <div class="chat-topbar">
+      <button class="btn btn-ghost btn-sm" id="sidebar-toggle" aria-label="Toggle conversation list">☰</button>
+      <div class="status"><span class="lamp-dot" style="width:6px;height:6px;"></span> Manosamvada is listening</div>
+      <span style="width:32px;"></span>
+    </div>
+
+    <div class="chat-messages" id="chat-messages" data-session-id="">
+      <div class="msg-row assistant">
+        <div class="msg-avatar">◐</div>
+        <div>
+          <div class="msg-bubble">Hello{% if username and username != 'Guest' %}, {{ username }}{% endif %}. I'm here, and I'm listening. What's on your mind today?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <form id="chat-input-form" class="chat-input-form">
+        <textarea id="chat-textarea" rows="1" placeholder="Share what's on your mind…" aria-label="Message"></textarea>
+        <button type="submit" class="btn btn-primary btn-sm">Send</button>
+      </form>
+      <div class="chat-input-hint">Manosamvada offers support, not a diagnosis. In a crisis, contact a local helpline immediately.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}
