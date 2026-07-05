@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Manosamvada — Dialogue of the Mind{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="lamp-glow"></div>
+  <div class="container hero-content">
+    <div class="eyebrow"><span class="lamp-dot"></span> A quiet space to be heard</div>
+    <h1>
+      Some thoughts are easier to say into the dark.
+      <span class="devanagari">मनःसंवाद — Dialogue of the Mind</span>
+    </h1>
+    <p class="hero-sub">
+      Manosamvada listens without judgment, notices how you're feeling as you write,
+      and responds with the tone your moment actually needs — calm when you're anxious,
+      steady when you're low, present if things feel urgent.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Start a conversation</a>
+      <a href="{{ url_for('guest') }}" class="btn btn-secondary">Continue as guest</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">How it listens</div>
+      <h2>Every message passes through two quiet layers</h2>
+      <p>Before Manosamvada replies, it reads your message twice — once for feeling, once for safety.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="glyph">◐</div>
+        <h3>Emotion detection</h3>
+        <p>A rule-based layer classifies each message — happy, sad, angry, anxious, neutral, or crisis — before a reply is ever drafted.</p>
+      </div>
+      <div class="feature-card">
+        <div class="glyph">✎</div>
+        <h3>Tone-matched response</h3>
+        <p>The detected emotion adjusts the system's tone directive, so Meta-Llama-3.1-8B answers with the warmth or steadiness your message calls for.</p>
+      </div>
+      <div class="feature-card">
+        <div class="glyph">✦</div>
+        <h3>Crisis awareness</h3>
+        <p>Messages are checked against a maintained list of crisis language. If detected, you're met with immediate support and helpline information.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="eyebrow">Built to be trusted with your words</div>
+      <h2>Private by design</h2>
+      <p>Your account is protected the way a mental health record should be.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="glyph">🔒</div>
+        <h3>OTP-verified accounts</h3>
+        <p>Registration requires a one-time code sent to your email, so only you can access your history.</p>
+      </div>
+      <div class="feature-card">
+        <div class="glyph">🗝</div>
+        <h3>Hashed passwords</h3>
+        <p>Passwords are hashed with bcrypt and never stored or logged in plain text.</p>
+      </div>
+      <div class="feature-card">
+        <div class="glyph">📄</div>
+        <h3>Your data, exportable</h3>
+        <p>Search your session history anytime, or export it as a CSV whenever you want a copy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <h2 style="max-width:520px; margin:0 auto 20px;">You don't need a reason to start talking.</h2>
+    <div class="hero-actions">
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Create an account</a>
+      <a href="{{ url_for('guest') }}" class="btn btn-secondary">Try it as a guest</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
